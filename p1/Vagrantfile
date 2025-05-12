@@ -1,37 +1,34 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 Vagrant.configure("2") do |config|
-    # Use a box that supports libvirt
-    config.vm.box = "generic/ubuntu2204"
+  # Utiliser une box compatible avec VirtualBox
+  config.vm.box = "ubuntu/jammy64"  # Box Ubuntu 22.04 pour VirtualBox
+  
+  # Définir la VM serveur (controller)
+  config.vm.define "npaolettS" do |server|
+    server.vm.hostname = "npaolettS"
+    server.vm.network "private_network", ip: "192.168.56.110"
     
-    # Define the server (controller) VM
-    config.vm.define "npaolettS" do |server|
-      server.vm.hostname = "npaolettS"
-      server.vm.network "private_network", ip: "192.168.56.110"
-      
-      # VM resources configuration
-      server.vm.provider "libvirt" do |lv|
-        lv.memory = 512
-        lv.cpus = 1
-      end
-      
-      # Provisioning script for the server node
-      server.vm.provision "shell", path: "scripts/server_setup.sh"
+    # Configuration des ressources VM pour VirtualBox
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 512
+      vb.cpus = 1
     end
     
-    # Define the server worker VM
-    config.vm.define "npaolettSW" do |worker|
-      worker.vm.hostname = "npaolettSW"
-      worker.vm.network "private_network", ip: "192.168.56.111"
-      
-      # VM resources configuration
-      worker.vm.provider "libvirt" do |lv|
-        lv.memory = 512
-        lv.cpus = 1
-      end
-      
-      # Provisioning script for the worker node
-      worker.vm.provision "shell", path: "scripts/worker_setup.sh"
-    end
+    # Script de provisionnement pour le nœud serveur
+    server.vm.provision "shell", path: "scripts/server_setup.sh"
   end
+  
+  # Définir la VM worker du serveur
+  config.vm.define "npaolettSW" do |worker|
+    worker.vm.hostname = "npaolettSW"
+    worker.vm.network "private_network", ip: "192.168.56.111"
+    
+    # Configuration des ressources VM pour VirtualBox
+    worker.vm.provider "virtualbox" do |vb|
+      vb.memory = 512
+      vb.cpus = 1
+    end
+    
+    # Script de provisionnement pour le nœud worker
+    worker.vm.provision "shell", path: "scripts/worker_setup.sh"
+  end
+end
