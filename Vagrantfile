@@ -1,0 +1,65 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Minimum requirements : 
+# - Server => Ram : 2Gb ; CPU : 2
+# - Agent => Ram : 512Mb ; CPU : 1
+machines=[
+  {
+    :hostname => "galambeyS",
+    :ip => "192.168.56.110",
+    :memory => "2048",
+    :cpus => "2",
+    :script => "server_init.sh",
+  },
+  {
+    :hostname => "galambeySW",
+    :ip => "192.168.56.111",
+    :memory => "512",
+    :cpus => "1",
+    :script => "serverWorker_init.sh",
+  },
+]
+
+Vagrant.configure("2") do |config|
+  machines.each do |machine|
+    config.vm.define machine[:hostname] do |node|
+      node.vm.box = "debian/bookworm64"
+      node.vm.network "private_network", ip: machine[:ip]
+      node.vm.hostname = machine[:hostname]
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = machine[:hostname]
+        vb.memory = machine[:memory]
+        vb.cpus = machine[:cpus]
+      end
+      node.vm.provision "shell", path: machine[:script]
+    end
+  end
+end
+
+# # Other way :
+# Vagrant.configure("2") do |config|
+#   config.vm.define "galambeyS" do | galambeyS |
+#     galambeyS.vm.box = "debian/bookworm64"
+#     galambeyS.vm.network "private_network", ip: "192.168.56.110"
+#     galambeyS.vm.hostname = "galambeyS"
+#     galambeyS.vm.provider "virtualbox" do | vb |
+#       vb.name = "galambeyS"
+#       vb.memory = "512"
+#       vb.cpus = "1"
+#     end
+#     galambeyS.vm.provision "shell", path: "server_init.sh"
+#   end 
+
+#   config.vm.define "galambeySW" do | galambeySW |
+#     galambeySW.vm.box = "debian/bookworm64"
+#     galambeySW.vm.network "private_network", ip: "192.168.56.111"
+#     galambeySW.vm.hostname = "galambeySW"
+#     galambeySW.vm.provider "virtualbox" do | vb |
+#       vb.name = "galambeySW"
+#       vb.memory = "512"
+#       vb.cpus = "1"
+#     end
+#     galambeySW.vm.provision "shell", path: "serverWorker_init.sh"
+#   end 
+# end
