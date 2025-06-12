@@ -1,11 +1,16 @@
 #!/bin/sh
 
 echo "Hello worker"
-# sudo apt update && sudo apt upgrade -y
-# sudo apt install curl -y
-# sudo apt install ufw -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl -y
+sudo apt install ufw -y
 
-# # Disable FireWall
-# ufw disable
+# Disable FireWall
+ufw disable
 
-# # curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=1 sh -
+# Recover the token fron the shared folder
+# TOKEN=$(vagrant ssh galambeyS -c "sudo cat /var/lib/rancher/k3s/server/node-token")
+TOKEN=$(cat /vagrant/token)
+# K3S_URL => Indicates the ip of the server node and the gate to connect
+# K3S_TOKEN => Allow the worker to authentificate
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.56.110:6443 K3S_TOKEN=${TOKEN} sh -
