@@ -9,7 +9,6 @@ sudo apt install ufw -y
 ufw disable
 
 # Recover the token fron the shared folder
-# TOKEN=$(vagrant ssh galambeyS -c "sudo cat /var/lib/rancher/k3s/server/node-token")
 TOKEN=$(cat /vagrant/token)
 # K3S_URL => Indicates the ip of the server node and the gate to connect
 # K3S_TOKEN => Allow the worker to authentificate
