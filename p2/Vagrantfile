@@ -12,13 +12,6 @@ machines=[
     :cpus => "2",
     :script => "server_init.sh",
   },
-  {
-    :hostname => "galambeySW",
-    :ip => "192.168.56.111",
-    :memory => "512",
-    :cpus => "1",
-    :script => "serverWorker_init.sh",
-  },
 ]
 
 Vagrant.configure("2") do |config|
