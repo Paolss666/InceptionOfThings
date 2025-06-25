@@ -2,6 +2,18 @@
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get upgrade -y
+# GRAPHIC INTALLATION
+# apt-get install task-gnome-desktop -y
+# # Create a user + sudo rights 
+# password=IOT
+# # Crypte le password kfs
+# pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+# useradd -m -p $pass IOT
+# # To force user to change his passwd at first connexion
+# passwd -e IOT
+# # To give sudo rigths
+# usermod -aG sudo IOT
+
 apt-get install curl -y
 apt-get install ufw -y
 
@@ -30,3 +42,4 @@ sudo kubectl apply -f /src/appX.com/app-one.yml
 sudo kubectl apply -f /src/appX.com/app-two.yml
 sudo kubectl apply -f /src/appX.com/app-three.yml
 sudo kubectl apply -f /src/appX.com/ingress-conf.yml
+sudo reboot
