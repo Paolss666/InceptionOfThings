@@ -6,7 +6,7 @@ apt-get update && apt-get upgrade -y
 # apt-get install task-gnome-desktop -y
 # # Create a user + sudo rights 
 # password=IOT
-# # Crypte le password kfs
+# # Crypte le password
 # pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 # useradd -m -p $pass IOT
 # # To force user to change his passwd at first connexion
